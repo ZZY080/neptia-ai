@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920" />
+    <title>Neptia · Video Slides</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-page: #f0f5f4;
+        --bg-slide: #ffffff;
+        --bg-slide-alt: #f7fbfa;
+        --bg-panel: rgba(255, 255, 255, 0.92);
+        --bg-panel-strong: #ffffff;
+        --bg-placeholder: #f4faf9;
+        --border-soft: rgba(106, 219, 212, 0.2);
+        --border-strong: rgba(106, 219, 212, 0.32);
+        --accent: #6adbd4;
+        --accent-soft: #e8f8f6;
+        --accent-secondary: #8ae8e2;
+        --accent-ink: #1d5c57;
+        --success: #2f9d6a;
+        --warm: #efb15e;
+        --text-primary: #142322;
+        --text-secondary: #3d524f;
+        --text-muted: #6d8583;
+        --radius: 14px;
+        --radius-sm: 10px;
+        --radius-lg: 18px;
+        --pad-x: 96px;
+        --pad-y: 72px;
+        --shadow-soft: 0 1px 0 rgba(106, 219, 212, 0.08),
+          0 12px 40px rgba(24, 72, 68, 0.05);
+        --shadow-card: 0 4px 32px rgba(24, 72, 68, 0.06);
+        --font-sans:
+          "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+        --font-serif:
+          "Instrument Serif", "Noto Serif SC", "Songti SC", "STSong", Georgia,
+          serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        text-rendering: optimizeLegibility;
+      }
+
+      body {
+        background: var(--bg-page);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .slide {
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-primary);
+        background: var(--bg-slide);
+      }
+
+      .slide > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Backgrounds: one calm layer each */
+      .bg-soft {
+        background: linear-gradient(
+          165deg,
+          #ffffff 0%,
+          #f9fdfc 45%,
+          #f1f9f7 100%
+        );
+      }
+
+      .bg-spotlight {
+        background: linear-gradient(180deg, #ffffff 0%, #f4faf9 100%);
+      }
+
+      .bg-grid {
+        background: linear-gradient(180deg, #fbfcfc 0%, #f0f6f5 100%);
+      }
+
+      .bg-panel {
+        background: linear-gradient(145deg, #fafdfc 0%, #eef5f4 100%);
+      }
+
+      /* Optional subtle grid (pair with .bg-grid / .bg-soft) */
+      .has-grid::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 59px,
+            rgba(106, 219, 212, 0.04) 59px,
+            rgba(106, 219, 212, 0.04) 60px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 59px,
+            rgba(106, 219, 212, 0.04) 59px,
+            rgba(106, 219, 212, 0.04) 60px
+          );
+        opacity: 0.35;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .has-footer::before {
+        content: "";
+        position: absolute;
+        left: var(--pad-x);
+        right: var(--pad-x);
+        bottom: 40px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(106, 219, 212, 0.35),
+          transparent
+        );
+        z-index: 2;
+      }
+
+      .t-hero {
+        font-size: 76px;
+        font-weight: 750;
+        line-height: 1.05;
+        letter-spacing: -2.8px;
+      }
+      .t-display {
+        font-size: 44px;
+        font-weight: 650;
+        line-height: 1.15;
+        letter-spacing: -1.2px;
+      }
+      .t-title {
+        font-size: 40px;
+        font-weight: 620;
+        line-height: 1.18;
+        letter-spacing: -0.8px;
+      }
+      .t-subtitle {
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1.45;
+      }
+      .t-lead {
+        font-size: 22px;
+        line-height: 1.55;
+        color: var(--text-secondary);
+        font-weight: 450;
+        max-width: 52ch;
+      }
+      .t-body {
+        font-size: 22px;
+        line-height: 1.58;
+        color: var(--text-secondary);
+      }
+      .t-small {
+        font-size: 17px;
+        line-height: 1.5;
+        color: var(--text-muted);
+      }
+
+      :lang(zh),
+      :lang(zh-CN),
+      :lang(zh-Hans),
+      .lang-zh {
+        word-break: break-word;
+      }
+
+      :lang(zh) .t-hero,
+      :lang(zh-CN) .t-hero,
+      :lang(zh-Hans) .t-hero,
+      .lang-zh .t-hero {
+        letter-spacing: -1px;
+        line-height: 1.12;
+      }
+
+      :lang(zh) .t-display,
+      :lang(zh-CN) .t-display,
+      :lang(zh-Hans) .t-display,
+      .lang-zh .t-display {
+        letter-spacing: -0.4px;
+        line-height: 1.2;
+      }
+
+      :lang(zh) .t-title,
+      :lang(zh-CN) .t-title,
+      :lang(zh-Hans) .t-title,
+      .lang-zh .t-title {
+        letter-spacing: -0.2px;
+        line-height: 1.22;
+      }
+
+      :lang(zh) .eyebrow,
+      :lang(zh-CN) .eyebrow,
+      :lang(zh-Hans) .eyebrow,
+      .lang-zh .eyebrow,
+      :lang(zh) .page-num,
+      :lang(zh-CN) .page-num,
+      :lang(zh-Hans) .page-num,
+      .lang-zh .page-num {
+        letter-spacing: 0.06em;
+        text-transform: none;
+      }
+
+      :lang(zh) .quote-text,
+      :lang(zh-CN) .quote-text,
+      :lang(zh-Hans) .quote-text,
+      .lang-zh .quote-text {
+        font-style: normal;
+      }
+
+      .eyebrow {
+        display: block;
+        font-size: 12px;
+        font-weight: 650;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--accent-ink);
+        padding-left: 14px;
+        border-left: 3px solid var(--accent);
+      }
+
+      .serif {
+        font-family: var(--font-serif);
+      }
+      .italic {
+        font-style: italic;
+      }
+      .text-accent {
+        color: var(--accent);
+      }
+      .text-ink {
+        color: var(--accent-ink);
+      }
+
+      /* Layout */
+      .pad-slide {
+        padding: var(--pad-y) var(--pad-x);
+      }
+      .pad-cover {
+        padding: 56px var(--pad-x) 72px;
+      }
+      .pad-center {
+        padding: 96px 120px;
+      }
+
+      .slide-head {
+        margin-bottom: 36px;
+        max-width: 1100px;
+      }
+      .slide-head.tight {
+        margin-bottom: 28px;
+      }
+
+      .flex-col {
+        display: flex;
+        flex-direction: column;
+      }
+      .flex-row {
+        display: flex;
+        flex-direction: row;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .justify-between {
+        justify-content: space-between;
+      }
+      .flex-1 {
+        flex: 1;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .mt-auto {
+        margin-top: auto;
+      }
+      .min-h-0 {
+        min-height: 0;
+      }
+
+      .gap-8 {
+        gap: 8px;
+      }
+      .gap-12 {
+        gap: 12px;
+      }
+      .gap-16 {
+        gap: 16px;
+      }
+      .gap-20 {
+        gap: 20px;
+      }
+      .gap-24 {
+        gap: 24px;
+      }
+      .gap-28 {
+        gap: 28px;
+      }
+      .gap-32 {
+        gap: 32px;
+      }
+      .gap-40 {
+        gap: 40px;
+      }
+
+      .card {
+        background: var(--bg-panel-strong);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .card-muted {
+        background: var(--bg-slide-alt);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+      }
+
+      .accent-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-ink);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .stat-card {
+        padding: 28px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .stat-value {
+        font-size: 60px;
+        font-weight: 800;
+        letter-spacing: -2px;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .stat-label {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.45;
+        color: var(--text-secondary);
+      }
+
+      .check-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .check-list li {
+        position: relative;
+        padding-left: 36px;
+        font-size: 22px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+      }
+
+      .check-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .image-placeholder {
+        position: relative;
+        border-radius: var(--radius-lg);
+        background: var(--bg-placeholder);
+        border: 1px dashed rgba(106, 219, 212, 0.35);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        color: var(--accent-ink);
+      }
+
+      .placeholder-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        text-align: center;
+        max-width: 400px;
+      }
+
+      .placeholder-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-sm);
+        display: grid;
+        place-items: center;
+        background: var(--accent-soft);
+        color: var(--accent-ink);
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .placeholder-title {
+        font-size: 22px;
+        font-weight: 650;
+        line-height: 1.3;
+        color: var(--text-primary);
+      }
+
+      .placeholder-copy {
+        font-size: 16px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+      }
+
+      .placeholder-tag {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        padding: 6px 11px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid var(--border-soft);
+        color: var(--accent-ink);
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* Cover */
+      .cover-body {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px;
+        align-items: stretch;
+        min-height: 0;
+      }
+
+      .cover-copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        font-size: 15px;
+        color: var(--text-muted);
+      }
+      .tag-row span::after {
+        content: "·";
+        margin-left: 20px;
+        color: rgba(106, 219, 212, 0.5);
+      }
+      .tag-row span:last-child::after {
+        display: none;
+      }
+
+      .cover-aside {
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 16px;
+        min-height: 0;
+      }
+
+      .cover-aside .image-placeholder:first-child {
+        grid-row: 1 / span 2;
+      }
+
+      .aside-note {
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: center;
+      }
+      .aside-note h3 {
+        font-size: 18px;
+        font-weight: 650;
+        color: var(--text-primary);
+      }
+      .aside-note p {
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+      }
+      .aside-label {
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent-ink);
+      }
+
+      .split-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .timeline-step {
+        padding: 24px;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .step-number {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: var(--accent-soft);
+        color: var(--accent-ink);
+        font-size: 15px;
+        font-weight: 750;
+      }
+
+      .quote-block {
+        padding: 48px 52px;
+      }
+
+      .quote-line {
+        width: 48px;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      .quote-text {
+        font-size: 38px;
+        line-height: 1.35;
+        color: var(--text-primary);
+        font-family: var(--font-serif);
+        font-style: italic;
+      }
+
+      .quote-attribution {
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .cta-shell {
+        display: grid;
+        grid-template-columns: 1fr 0.88fr;
+        gap: 36px;
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        align-items: stretch;
+      }
+
+      .cta-panel {
+        padding: 40px 44px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      .page-num {
+        position: absolute;
+        right: var(--pad-x);
+        bottom: 52px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        z-index: 2;
+      }
+
+      .corner-logo {
+        position: absolute;
+        top: 48px;
+        right: var(--pad-x);
+        z-index: 3;
+      }
+
+      .corner-logo img {
+        display: block;
+        width: 132px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .cover-logo {
+        top: 48px;
+        left: var(--pad-x);
+        right: auto;
+      }
+
+      .cover-logo img {
+        width: 120px;
+      }
+
+      .module-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .module-card {
+        padding: 22px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 0;
+      }
+
+      .module-card h3 {
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: 650;
+        color: var(--text-primary);
+      }
+
+      .module-card p {
+        font-size: 16px;
+        line-height: 1.52;
+        color: var(--text-secondary);
+      }
+
+      .tip-grid {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        gap: 28px;
+        width: 100%;
+        flex: 1;
+        align-items: stretch;
+        min-height: 0;
+      }
+
+      .tip-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .tip-list li {
+        padding: 18px 20px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-soft);
+        background: var(--bg-slide);
+        font-size: 18px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+      }
+
+      /* Aliases — same layout system, names preserved for outlines / SKILL */
+      .hero-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 56px;
+        align-items: stretch;
+        min-height: 0;
+        width: 100%;
+      }
+      .media-mosaic {
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 16px;
+        min-height: 0;
+      }
+      .media-mosaic .image-placeholder:first-child {
+        grid-row: 1 / span 2;
+      }
+      .card-strong {
+        background: var(--bg-panel-strong);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+      }
+      .info-rail {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 16px;
+        max-width: 900px;
+      }
+      .info-chip {
+        padding: 10px 16px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-soft);
+        background: var(--bg-slide-alt);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--accent-ink);
+      }
+      .slide-kicker {
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent-ink);
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+    Neptia default slide template (#6ADBD4). Replace sections per outline.
+    Chinese: set lang="zh-CN" on <html> or class="lang-zh" on sections.
+  -->
+
+    <section class="slide pad-cover bg-soft">
+      <div class="corner-logo cover-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <div class="cover-body">
+        <div class="cover-copy">
+          <span class="eyebrow">Neptia Video Template</span>
+          <div class="flex-col gap-24">
+            <h1 class="t-hero">
+              Professional services stories, explained with
+              <span class="text-accent">clarity and authority</span>.
+            </h1>
+            <p class="t-lead">
+              A structured slide system for instructional videos, explainers,
+              and client-ready narratives.
+            </p>
+          </div>
+          <div class="tag-row" aria-label="Highlights">
+            <span>Professional-ready</span>
+            <span>Visual-friendly</span>
+            <span>Accent #6ADBD4</span>
+          </div>
+        </div>
+        <div class="cover-aside">
+          <div class="image-placeholder card">
+            <span class="placeholder-tag">Primary</span>
+            <div class="placeholder-content">
+              <div class="placeholder-icon">IMG</div>
+              <div class="placeholder-title">
+                Service overview or workflow diagram
+              </div>
+              <div class="placeholder-copy">
+                Screenshot, process visual, or illustration.
+              </div>
+            </div>
+          </div>
+          <div class="aside-note card-muted">
+            <span class="aside-label">Best for</span>
+            <h3>Executive explainers</h3>
+            <p>
+              Frame the challenge and story without crowding the opening slide.
+            </p>
+          </div>
+          <div class="aside-note card-muted">
+            <span class="aside-label">Best for</span>
+            <h3>Instructional modules</h3>
+            <p>
+              One strong visual per beat; narration carries the detail.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide pad-slide bg-grid has-footer">
+      <div class="corner-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <header class="slide-head">
+        <div class="flex-col gap-16">
+          <span class="eyebrow">Context</span>
+          <div
+            class="flex-row justify-between items-center"
+            style="gap: 48px; align-items: flex-end"
+          >
+            <h2 class="t-display" style="flex: 1; max-width: 920px">
+              Introduce the client challenge, scope, or objective before the
+              detailed walkthrough.
+            </h2>
+            <p class="t-body" style="flex: 0 0 420px">
+              Works for advisory narratives, transformation, and process-led
+              explanations.
+            </p>
+          </div>
+        </div>
+      </header>
+      <div class="split-layout">
+        <div class="card flex-col gap-24" style="padding: 36px 40px">
+          <span class="accent-pill">Suggested framing</span>
+          <ul class="check-list">
+            <li>
+              State the business problem clearly: fragmented delivery, low
+              visibility, or inconsistent execution.
+            </li>
+            <li>
+              Describe the service response in plain language viewers can
+              grasp quickly.
+            </li>
+            <li>
+              Name one concrete outcome: speed, governance, or experience.
+            </li>
+            <li>
+              Keep on-screen copy short; narration handles depth.
+            </li>
+          </ul>
+        </div>
+        <div class="image-placeholder">
+          <span class="placeholder-tag">Visual</span>
+          <div class="placeholder-content">
+            <div class="placeholder-icon">FIG</div>
+            <div class="placeholder-title">
+              Diagram, maturity model, or key interface
+            </div>
+            <div class="placeholder-copy">
+              Reinforce the setup without competing with the headline.
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="page-num">02</span>
+    </section>
+
+    <section class="slide pad-slide bg-spotlight has-footer">
+      <div class="corner-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <header class="slide-head tight">
+        <div class="flex-col gap-14">
+          <span class="eyebrow">Service pillars</span>
+          <h2 class="t-display" style="max-width: 960px">
+            Break the offering into clear parts before process detail.
+          </h2>
+          <p class="t-body" style="max-width: 720px">
+            Use when the story needs memorable chunks before timelines or deep
+            dives.
+          </p>
+        </div>
+      </header>
+      <div class="flex-row gap-24 flex-1 min-h-0" style="align-items: stretch">
+        <div class="flex-col gap-16 flex-1 min-h-0" style="flex: 1.06">
+          <div class="module-list">
+            <div class="module-card card">
+              <h3>Assessment</h3>
+              <p>
+                Current-state review, inputs, and baseline that shape strategy.
+              </p>
+            </div>
+            <div class="module-card card">
+              <h3>Design</h3>
+              <p>
+                How the process, model, or solution is structured for the client.
+              </p>
+            </div>
+            <div class="module-card card">
+              <h3>Execution</h3>
+              <p>
+                Implementation and delivery that turn strategy into action.
+              </p>
+            </div>
+            <div class="module-card card">
+              <h3>Optimization</h3>
+              <p>
+                Reporting, iteration, and improvement after rollout.
+              </p>
+            </div>
+          </div>
+          <div class="card-muted" style="padding: 18px 22px">
+            <p class="t-small" style="color: var(--text-primary)">
+              <strong class="text-ink">Note:</strong> swap labels to match your
+              engagement; layout stays the same.
+            </p>
+          </div>
+        </div>
+        <div class="image-placeholder flex-1" style="flex: 0.94">
+          <span class="placeholder-tag">Reference</span>
+          <div class="placeholder-content">
+            <div class="placeholder-icon">MAP</div>
+            <div class="placeholder-title">
+              Framework, journey, or annotated screen
+            </div>
+            <div class="placeholder-copy">
+              Supports the four-part story at left.
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="page-num">03</span>
+    </section>
+
+    <section class="slide pad-slide bg-panel has-footer">
+      <div class="corner-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <header class="slide-head tight">
+        <div class="flex-col gap-14">
+          <span class="eyebrow">Sequence</span>
+          <div
+            class="flex-row justify-between items-center"
+            style="gap: 32px; align-items: flex-end"
+          >
+            <h2 class="t-display" style="max-width: 800px">
+              Three stages that align with narration and visuals.
+            </h2>
+            <span class="accent-pill">Workflows · Onboarding · Playbooks</span>
+          </div>
+        </div>
+      </header>
+      <div class="timeline">
+        <div class="timeline-step card">
+          <div class="step-number">1</div>
+          <h3 class="t-title" style="font-size: 26px">
+            Assess the current state
+          </h3>
+          <p class="t-body" style="font-size: 18px">
+            Baseline process, constraints, and why the intervention matters.
+          </p>
+          <div class="image-placeholder" style="min-height: 160px">
+            <span class="placeholder-tag">Scene 1</span>
+            <div class="placeholder-content">
+              <div class="placeholder-icon">01</div>
+              <div class="placeholder-title">Discovery visual</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step card">
+          <div class="step-number">2</div>
+          <h3 class="t-title" style="font-size: 26px">
+            Apply the recommended approach
+          </h3>
+          <p class="t-body" style="font-size: 18px">
+            Framework or toolset Neptia uses from diagnosis to execution.
+          </p>
+          <div class="image-placeholder" style="min-height: 160px">
+            <span class="placeholder-tag">Scene 2</span>
+            <div class="placeholder-content">
+              <div class="placeholder-icon">02</div>
+              <div class="placeholder-title">Method visual</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step card">
+          <div class="step-number">3</div>
+          <h3 class="t-title" style="font-size: 26px">Measure and refine</h3>
+          <p class="t-body" style="font-size: 18px">
+            Outcomes, checks, and the loop that sustains the service.
+          </p>
+          <div class="image-placeholder" style="min-height: 160px">
+            <span class="placeholder-tag">Scene 3</span>
+            <div class="placeholder-content">
+              <div class="placeholder-icon">03</div>
+              <div class="placeholder-title">Outcome visual</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="page-num">04</span>
+    </section>
+
+    <section class="slide pad-center bg-soft has-footer">
+      <div class="corner-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <div class="tip-grid">
+        <div class="quote-block card">
+          <div class="quote-line" aria-hidden="true"></div>
+          <p class="quote-text">
+            Strong explainers make complex services feel practical and relevant
+            to day-to-day work.
+          </p>
+          <div class="flex-col gap-12" style="margin-top: 28px">
+            <span class="accent-pill">Insight / transition</span>
+            <p class="quote-attribution">
+              For a principle, client insight, or bridge to the next section.
+            </p>
+          </div>
+        </div>
+        <div class="card flex-col gap-20" style="padding: 36px 40px; justify-content: center">
+          <span class="eyebrow">Guidance</span>
+          <ul class="tip-list">
+            <li>One main idea per slide so narration can add nuance.</li>
+            <li>
+              Alternate screenshots, diagrams, and type-led layouts for rhythm.
+            </li>
+            <li>
+              Examples: specific enough to trust, general enough to reuse.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <span class="page-num">05</span>
+    </section>
+
+    <section class="slide pad-slide bg-spotlight has-footer">
+      <div class="corner-logo">
+        <img src="../../assets/neptia_logo.png" alt="Neptia logo" />
+      </div>
+      <div class="cta-shell">
+        <div class="cta-panel card">
+          <div class="flex-col gap-24">
+            <span class="eyebrow">Next steps</span>
+            <h2 class="t-display">
+              Close with a clear action, contact, and proof-oriented visual.
+            </h2>
+            <p class="t-body" style="max-width: 640px">
+              Recap, invitation to implement, or summary of value delivered.
+            </p>
+          </div>
+          <p class="t-small">www.neptia.net · contact@neptia.com</p>
+        </div>
+        <div class="image-placeholder">
+          <span class="placeholder-tag">Closing</span>
+          <div class="placeholder-content">
+            <div class="placeholder-icon">END</div>
+            <div class="placeholder-title">
+              Outcome snapshot or final service visual
+            </div>
+            <div class="placeholder-copy">
+              Reinforce trust and support the call to action.
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="page-num">06</span>
+    </section>
+  </body>
+</html>

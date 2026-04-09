@@ -1,0 +1,26 @@
+{
+  "name": "article-to-video",
+  "description": "Convert an article into a video format.",
+  "input": {
+    "type": "object",
+    "properties": {
+      "article": {
+        "type": "string",
+        "description": "The content of the article to be converted into a video."
+      }
+    },
+    "required": ["article"]
+  },
+  "output": {
+    "type": "object",
+    "properties": {
+      "videoUrl": {
+        "type": "string",
+        "description": "The URL of the generated video."
+      }
+    },
+    "required": ["videoUrl"],
+    "description": "The output contains the URL of the generated video."
+  },
+  "dependencies": ["tts/text-to-speech", "video/generate-video"]
+}
