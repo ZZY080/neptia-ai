@@ -1,5 +1,5 @@
 ---
-name: marketing-video
+name: article-to-video
 description: "源文档 → 大纲 Markdown 审核 → 可选页内配图 → HTML 幻灯片 → 截图 → TTS 解说 → 字幕 → 视频。支持中文和英文视频。CLI 提供 image、screenshot、tts、srt、render。"
 ---
 
@@ -9,8 +9,10 @@ description: "源文档 → 大纲 Markdown 审核 → 可选页内配图 → HT
 
 ## 1. 目录结构
 
+输入与产出写在**运行 CLI 时的当前工作目录**下的 `media/`（一般为项目根，与 `skills/` 同级），由 `paths.ts` 的 `process.cwd()` + `media` 决定。请在项目根执行 `npm run video -- …`，勿在子目录随便执行以免写到错误路径。
+
 ```
-~/.openclaw/media/
+media/
 ├── assets/                # 共用品牌资源、logo、模板配图
 ├── inbound/               # 输入源文档
 ├── wip/<task-id>/
@@ -38,19 +40,20 @@ description: "源文档 → 大纲 Markdown 审核 → 可选页内配图 → HT
 首次运行：
 
 ```bash
-mkdir -p ~/.openclaw/media/{assets,inbound,wip,outbound}
+# 在项目根目录（npm run video 的 cwd）执行
+mkdir -p media/{assets,inbound,wip,outbound}
 ```
 
 ## 2. 端到端工作流
 
 ### 步骤 0 - 解析源文档
 
-**网页 URL**：使用浏览器工具打开目标 URL，等待页面渲染完成，抓取整页内容快照，并写入 `wip/<task-id>/source.md`。
+**网页 URL**：使用浏览器工具打开目标 URL，等待页面渲染完成，抓取整页内容快照，并写入 `media/wip/<task-id>/source.md`。
 
 **本地文件**（PDF、PPTX、Word 等）：
 
 ```bash
-markitdown <source-file> > ~/.openclaw/media/wip/<task-id>/source.md
+markitdown <source-file> > media/wip/<task-id>/source.md
 ```
 
 完整阅读 `source.md`，提取主题、结构和关键数据点。
@@ -93,7 +96,7 @@ markitdown <source-file> > ~/.openclaw/media/wip/<task-id>/source.md
 
 #### 完成标准
 
-将完整大纲保存到 `wip/<task-id>/outline.md`，并先把该 Markdown 文件发给用户审核。审核材料必须是完整大纲文档，不能是摘要或节选。
+将完整大纲保存到 `media/wip/<task-id>/outline.md`，并先把该 Markdown 文件发给用户审核。审核材料必须是完整大纲文档，不能是摘要或节选。
 
 只有在用户明确确认 Markdown 大纲后，才能继续执行。步骤 2 到 8 全部基于这个已批准的大纲。
 
@@ -102,33 +105,33 @@ markitdown <source-file> > ~/.openclaw/media/wip/<task-id>/source.md
 #### 2a. 复制模板
 
 ```bash
-cp skills/marketing-video/templates/default.html \
-   ~/.openclaw/media/wip/<task-id>/slides.html
+cp skills/video/article-to-video/template/default.html \
+   media/wip/<task-id>/slides.html
 ```
 
 #### 2b. 可选：生成用于页内摆放的配图
 
-如某些幻灯片需要插图、概念图、场景图或产品示意图，可先生成 JPEG 配图，再在 HTML 中通过 `<img>` 引用。生成命令：
+如某些幻灯片需要插图、概念图、场景图或产品示意图，可先生成 JPEG 配图，再在 HTML 中通过 `<img>` 引用。需要环境变量 **`GEMINI_API_KEY`**（Google GenAI）。生成命令：
 
 ```bash
-npx tsx skills/marketing-video/scripts/cli.ts image \
+npx tsx skills/video/article-to-video/script/cli.ts image \
   --task-id <task-id> \
   --prompt "<detailed image prompt>" \
   --filename cover-scene.jpg
 ```
 
-默认输出到 `wip/<task-id>/images/<filename>`。如需引用共享品牌资源（例如 logo），请放在 `~/.openclaw/media/assets/`。生成后，可在 `slides.html` 中使用相对路径引用，例如：
+默认输出到 `media/wip/<task-id>/images/<filename>`。如需引用共享品牌资源（例如 logo），请放在 `media/assets/`。生成后，可在 `slides.html` 中使用相对路径引用，例如：
 
 ```html
 <img src="./images/cover-scene.jpg" alt="Descriptive alt text" />
 ```
 
-从 `wip/<task-id>/slides.html` 引用共享资源时，可使用：
+从 `media/wip/<task-id>/slides.html` 引用共享资源时，可使用：
 
 ```html
 <img
-  src="../../assets/leadvisor_platform_logo.png"
-  alt="Leadvisor Platform logo"
+  src="../../assets/your-logo.png"
+  alt="Brand logo"
 />
 ```
 
@@ -190,7 +193,7 @@ npx tsx skills/marketing-video/scripts/cli.ts image \
 - **平滑过渡**：使用 `linear-gradient()`、`conic-gradient()`、`radial-gradient()`
 - **装饰形状**：使用带有 `border-radius`、`clip-path`、`box-shadow` 的元素
 
-模板 `templates/default.html` 内置的 **背景预设**（作为类名加在 `.slide` 上；以源文件为准，勿凭记忆杜撰类名）：
+模板 `template/default.html`（本技能目录下）内置的 **背景预设**（作为类名加在 `.slide` 上；以源文件为准，勿凭记忆杜撰类名）：
 
 | Class           | 效果                           |
 | --------------- | ------------------------------ |
@@ -239,10 +242,10 @@ npx tsx skills/marketing-video/scripts/cli.ts image \
 ### 步骤 3 - 截图导出幻灯片
 
 ```bash
-npx tsx skills/marketing-video/scripts/cli.ts screenshot --task-id <task-id>
+npx tsx skills/video/article-to-video/script/cli.ts screenshot --task-id <task-id>
 ```
 
-通过无头 Chromium（Playwright）生成 `slides/slide-001.png`、`slide-002.png` 等 1920×1080 图片。验证输出数量与 `slides.html` 中 `<section class="slide">` 元素数量一致。
+通过 Playwright 驱动 Chromium 生成 `slides/slide-001.png`、`slide-002.png` 等 1920×1080 图片：优先使用本机已安装的 **Google Chrome**；若无则回退到 Playwright 自带的 Chromium（首次请在项目根执行 `npx playwright install chromium`）。验证输出数量与 `slides.html` 中 `<section class="slide">` 元素数量一致。
 
 ### 步骤 4 - 质检：对截图进行视觉检查（强制）
 
@@ -291,7 +294,7 @@ npx tsx skills/marketing-video/scripts/cli.ts screenshot --task-id <task-id>
 中英文视频统一使用以下 TTS voice：
 
 ```bash
-npx tsx skills/marketing-video/scripts/cli.ts tts \
+npx tsx skills/video/article-to-video/script/cli.ts tts \
   --task-id <task-id> \
   --voice English_Explanatory_Man \
   --tts-speed 1.0
@@ -304,7 +307,7 @@ npx tsx skills/marketing-video/scripts/cli.ts tts \
 ### 步骤 7 - 生成字幕
 
 ```bash
-npx tsx skills/marketing-video/scripts/cli.ts srt --task-id <task-id>
+npx tsx skills/video/article-to-video/script/cli.ts srt --task-id <task-id>
 ```
 
 将解说拆分为字幕行，并生成 `subtitles/all.srt` 以及按 segment 拆分的 `segment-*.srt` 文件。
@@ -312,7 +315,7 @@ npx tsx skills/marketing-video/scripts/cli.ts srt --task-id <task-id>
 ### 步骤 8 - 渲染视频
 
 ```bash
-npx tsx skills/marketing-video/scripts/cli.ts render --task-id <task-id>
+npx tsx skills/video/article-to-video/script/cli.ts render --task-id <task-id>
 ```
 
 将每组 `slide-*.png` + `segment-*.mp3` + `segment-*.srt` 合成为 `clip-*.mp4` 片段（1920×1080，带淡入淡出过渡），再拼接为最终的 `outbound/<task-id>.mp4`。
@@ -321,7 +324,7 @@ npx tsx skills/marketing-video/scripts/cli.ts render --task-id <task-id>
 
 ## 3. CLI 快速参考
 
-在工作区根目录（`/Users/leadvisor/.openclaw/workspace`）下运行：
+在项目根目录（当前工作目录 `cwd`，例如 `neptia-ai/`）下运行：
 
 | Command                       | 用途                                                                             |
 | ----------------------------- | -------------------------------------------------------------------------------- |
@@ -331,16 +334,16 @@ npx tsx skills/marketing-video/scripts/cli.ts render --task-id <task-id>
 | `… srt --task-id <id>`        | `segments.json` → SRT 字幕文件                                                   |
 | `… render --task-id <id>`     | 幻灯片 + 音频 + srt → 最终 MP4（ffmpeg）                                         |
 
-其中 `…` = `npx tsx skills/marketing-video/scripts/cli.ts`（或 `npm run video --`）。
+其中 `…` = `npx tsx skills/video/article-to-video/script/cli.ts`（或 `npm run video --`）。
 
 源文档解析不通过 CLI 完成，而是使用浏览器工具（针对 URL）或 `markitdown`（针对本地文件）。
 
 ## 4. 验收标准
 
 - `slides.html` 中每个大纲页都对应一个 `.slide` 区块
-- `slides.html` 中 `<style>` 与 `templates/default.html` **保持一致**（未做按需删减）；若确需全局样式补丁，应在保留原模板全量的基础上追加规则
+- `slides.html` 中 `<style>` 与 `skills/video/article-to-video/template/default.html` **保持一致**（未做按需删减）；若确需全局样式补丁，应在保留原模板全量的基础上追加规则
 - 所有幻灯片背景都仅使用 CSS，不使用外部图片
-- 如使用页内配图，相关文件位于 `wip/<task-id>/images/` 且 `slides.html` 引用路径有效
+- 如使用页内配图，相关文件位于 `media/wip/<task-id>/images/` 且 `slides.html` 引用路径有效
 - 截图 QA 已通过：无溢出、无布局损坏、无对比度问题
 - `slides/` 中包含数量正确的 1920×1080 PNG 文件
 - `segments.json` 中 segment 数量等于幻灯片数量，`slideIndex` 完整覆盖 1..N
@@ -349,12 +352,12 @@ npx tsx skills/marketing-video/scripts/cli.ts render --task-id <task-id>
 
 ```bash
 ffprobe -v error -show_entries format=duration,size -of default=nw=1 \
-  ~/.openclaw/media/outbound/<task-id>.mp4
+  media/outbound/<task-id>.mp4
 ```
 
 ## 5. 错误处理
 
 - 关键步骤失败时，应立即报错并终止
-- 绝不能覆盖 `inbound/` 中的产物，所有中间输出都写入 `wip/<task-id>/`
+- 绝不能覆盖 `media/inbound/` 中的产物，所有中间输出都写入 `media/wip/<task-id>/`
 - 整条流程支持恢复执行：任意步骤都可以重跑，且不会丢失已有输出
 - 不要越过失败的步骤继续执行，应先修复问题

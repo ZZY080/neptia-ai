@@ -1,8 +1,10 @@
-import os from "node:os";
 import path from "node:path";
 import type { TaskPaths } from "./types";
 
-export const MEDIA_ROOT = path.join(os.homedir(), ".openclaw", "media");
+/** 与运行命令时的当前工作目录一致（请在项目根执行 `npm run video`） */
+export const PROJECT_ROOT = path.resolve(process.cwd());
+export const MEDIA_ROOT = path.join(PROJECT_ROOT, "media");
+export const DOTENV_PATH = path.join(PROJECT_ROOT, ".env");
 
 export function buildTaskPaths(taskId: string, outputPath?: string): TaskPaths {
   const root = MEDIA_ROOT;

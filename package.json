@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "video": "tsx video/article-to-video/script/cli.ts"
+    "video": "tsx skills/video/article-to-video/script/cli.ts"
   },
   "keywords": [],
   "author": "",

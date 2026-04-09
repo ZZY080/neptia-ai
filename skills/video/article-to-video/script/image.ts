@@ -1,15 +1,16 @@
 /**
- * Generate JPEG assets via Google Imagen for placement inside HTML slides.
+ * Generate JPEG via Google GenAI image API (@google/genai) for HTML slides.
  * One API call per image. Does not modify slides.html — callers insert files via <img>.
  */
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { config as loadDotenv } from "dotenv";
 import { GoogleGenAI } from "@google/genai";
+import { DOTENV_PATH } from "./paths";
 import { ensureDir, fail } from "./utils";
 
 loadDotenv();
-loadDotenv({ path: path.resolve(__dirname, "../../../.env") });
+loadDotenv({ path: DOTENV_PATH });
 
 const DEFAULT_GUIDANCE = 1.5;
 const DEFAULT_ASPECT = "16:9";

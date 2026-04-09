@@ -9,6 +9,7 @@ lerna-debug.log*
 
 # Node modules / build output
 node_modules
+media/
 .next/
 dist
 dist-ssr

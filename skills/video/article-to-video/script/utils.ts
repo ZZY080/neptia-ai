@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
+import process from "node:process";
 
 export function logInfo(message: string): void {
   console.log(`[信息] ${message}`);
@@ -66,8 +67,13 @@ export async function execCommand(
 }
 
 export async function checkBinary(binary: string): Promise<void> {
+  const isWindows = process.platform === "win32";
   try {
-    await execCommand("which", [binary]);
+    if (isWindows) {
+      await execCommand("where", [binary]);
+    } else {
+      await execCommand("which", [binary]);
+    }
   } catch {
     fail(`缺少依赖命令: ${binary}。请先安装后再执行。`);
   }

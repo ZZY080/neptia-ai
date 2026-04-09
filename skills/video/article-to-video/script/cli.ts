@@ -4,7 +4,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { config as loadDotenv } from "dotenv";
 import { generateImage, taskImagePath } from "./image";
-import { buildTaskPaths } from "./paths";
+import { buildTaskPaths, DOTENV_PATH } from "./paths";
 import { renderSegmentsAndConcat } from "./render";
 import { writeSrtFiles } from "./srt";
 import { synthesizeSegments } from "./tts";
@@ -12,14 +12,14 @@ import { checkBinary, ensureDir, fail, logInfo } from "./utils";
 import type { Segment } from "./types";
 
 loadDotenv();
-loadDotenv({ path: path.resolve(__dirname, "../../../.env") });
+loadDotenv({ path: DOTENV_PATH });
 
 const program = new Command();
 
 program
-  .name("marketing-video")
+  .name("article-to-video")
   .description(
-    "营销视频工具：TTS 语音合成、字幕生成、视频渲染。PPT 操作请用 skills/powerpoint-pptx。",
+    "文章/文档转视频：配图、幻灯片截图、TTS、字幕与成片。请在项目根目录运行；产物写入 ./media/。",
   );
 
 program
@@ -125,6 +125,12 @@ program
       if (segments.length === 0) {
         fail("segments.json 无分段。");
       }
+      const missingDuration = segments.some(
+        (s) => !Number.isFinite(s.durationSeconds) || (s.durationSeconds ?? 0) <= 0,
+      );
+      if (missingDuration) {
+        fail("segments 缺少有效 durationSeconds。请先执行 tts，再生成字幕。");
+      }
       const { allSrtPath } = await writeSrtFiles(segments, paths.subtitlesDir);
       logInfo(`字幕已写入：${allSrtPath}`);
     } catch (error) {
@@ -138,7 +144,7 @@ program
   .command("render")
   .description("幻灯片图片 + 音频 + 字幕 → 片段与成片 mp4")
   .requiredOption("--task-id <id>", "任务 ID")
-  .option("--out <path>", "输出视频路径（默认 ~/.openclaw/media/outbound/<task-id>.mp4）")
+  .option("--out <path>", "输出视频路径（默认 <cwd>/media/outbound/<task-id>.mp4）")
   .action(async (opts: { taskId: string; out?: string }) => {
     try {
       const paths = buildTaskPaths(opts.taskId, opts.out?.trim());

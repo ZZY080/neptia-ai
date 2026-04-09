@@ -1,12 +1,12 @@
 {
   "name": "article-to-video",
-  "description": "Convert an article into a video format.",
+  "description": "Article or document to marketing/explainer video: markdown outline, HTML slides, screenshots, MiniMax TTS, SRT, ffmpeg MP4. Paths under <cwd>/media/. CLI: npm run video -- …",
   "input": {
     "type": "object",
     "properties": {
       "article": {
         "type": "string",
-        "description": "The content of the article to be converted into a video."
+        "description": "Source article or notes; workflow also supports local files and URLs per SKILL.md."
       }
     },
     "required": ["article"]
@@ -14,13 +14,17 @@
   "output": {
     "type": "object",
     "properties": {
+      "videoPath": {
+        "type": "string",
+        "description": "Absolute or project-relative path to the final MP4, e.g. media/outbound/<task-id>.mp4."
+      },
       "videoUrl": {
         "type": "string",
-        "description": "The URL of the generated video."
+        "description": "Optional: URL if the same file is hosted; local-only runs may omit."
       }
     },
-    "required": ["videoUrl"],
-    "description": "The output contains the URL of the generated video."
+    "required": ["videoPath"],
+    "description": "Primary artifact is a local MP4 path under media/outbound/."
   },
-  "dependencies": ["tts/text-to-speech", "video/generate-video"]
+  "dependencies": []
 }

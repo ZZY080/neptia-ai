@@ -22,7 +22,13 @@ export async function screenshotSlides(
     );
   }
 
-  const browser = await chromium.launch({ channel: "chrome" });
+  let browser;
+  try {
+    browser = await chromium.launch({ channel: "chrome" });
+  } catch {
+    logInfo("未检测到系统 Chrome，改用 Playwright 自带 Chromium…");
+    browser = await chromium.launch();
+  }
   try {
     const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 
